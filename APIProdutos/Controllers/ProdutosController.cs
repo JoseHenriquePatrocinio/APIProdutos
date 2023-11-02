@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using APIProdutos.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using APIProdutos.Data;
 
 namespace APIProdutos.Controllers
 {
@@ -22,23 +17,24 @@ namespace APIProdutos.Controllers
 
         // GET: api/Produtos
         [HttpGet]
+        [Route("Consultar")]
         public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
         {
-          if (_context.Produtos == null)
-          {
-              return NotFound();
-          }
+            if (_context.Produtos == null)
+            {
+                return NotFound();
+            }
             return await _context.Produtos.ToListAsync();
         }
 
         // GET: api/Produtos/5
-        [HttpGet("{id}")]
+        [HttpGet("ConsultarPorId/{id}")]
         public async Task<ActionResult<Produto>> GetProduto(int id)
         {
-          if (_context.Produtos == null)
-          {
-              return NotFound();
-          }
+            if (_context.Produtos == null)
+            {
+                return NotFound();
+            }
             var produto = await _context.Produtos.FindAsync(id);
 
             if (produto == null)
@@ -85,10 +81,10 @@ namespace APIProdutos.Controllers
         [HttpPost]
         public async Task<ActionResult<Produto>> PostProduto(Produto produto)
         {
-          if (_context.Produtos == null)
-          {
-              return Problem("Entity set 'AppDbContext.Produtos'  is null.");
-          }
+            if (_context.Produtos == null)
+            {
+                return Problem("Entity set 'AppDbContext.Produtos'  is null.");
+            }
             _context.Produtos.Add(produto);
             await _context.SaveChangesAsync();
 
